@@ -17,7 +17,7 @@ def home():
 	logger.info("Home is successfull")
 	return "THis is MK"
 
-@app.route("/seans")
+@app.route("/seans/")
 def seans_all():
 	try:
 		session = Session()
@@ -48,7 +48,7 @@ def seans_one(seans_id):
 		res = jsonify({"error": message})
 		return res, 400
 
-@app.route("/seans/create", methods = ["POST"])
+@app.route("/create_seans", methods = ["POST"])
 def create_seans():
 	content = request.get_json()
 	#seans_name = content.get("name")
@@ -56,7 +56,16 @@ def create_seans():
 	if date:
 		try:
 			session = Session()
-			new_seans = Seans(date) 
+			new_seans = Seans(date=date)
+			session.add(new_seans)
+			logger.info(f"New seans with date {date} is added")
+			res = jsonify(new_seans.serialize)
+			return res, 201
+		except Exceptin as ex:
+			message = f"New seans is not added. Error is {ex}"
+			logger.warning(message)
+			res  = jsonify({"error":message})
+			return res, 400
 
 
 
