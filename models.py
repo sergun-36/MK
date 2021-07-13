@@ -12,6 +12,13 @@ class Seans(Base):
 	id = Column(Integer, primary_key=True)
 	date = Column("date", String)
 
+	@property
+	def serialize(self):
+		#return self._serialize
+		return {"id": self.id,
+				"date": self.date}
+	
+
 
 class Player(Base):
 	__tablename__ = "player"

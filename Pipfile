@@ -7,6 +7,7 @@ name = "pypi"
 sqlalchemy = "*"
 pyyaml = "*"
 flask = "*"
+flask-swagger = "*"
 
 [dev-packages]
 
