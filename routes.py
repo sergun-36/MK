@@ -17,7 +17,7 @@ def home():
 	logger.info("Home is successfull")
 	return "THis is MK"
 
-@app.route("/seans/")
+@app.route("/seans/", methods = ["GET"])
 def seans_all():
 	try:
 		session = Session()
@@ -34,7 +34,7 @@ def seans_all():
 		return res, 400
 
 
-@app.route("/seans/<seans_id>")
+@app.route("/seans/<seans_id>/", methods = ["GET"])
 def seans_one(seans_id):
 	try:
 		session = Session()
@@ -48,7 +48,7 @@ def seans_one(seans_id):
 		res = jsonify({"error": message})
 		return res, 400
 
-@app.route("/create_seans", methods = ["POST"])
+@app.route("/create/seans/", methods = ["POST"])
 def create_seans():
 	content = request.get_json()
 	#seans_name = content.get("name")
@@ -61,7 +61,7 @@ def create_seans():
 			logger.info(f"New seans with date {date} is added")
 			res = jsonify(new_seans.serialize)
 			return res, 201
-		except Exceptin as ex:
+		except Exception as ex:
 			message = f"New seans is not added. Error is {ex}"
 			logger.warning(message)
 			res  = jsonify({"error":message})
@@ -69,18 +69,45 @@ def create_seans():
 
 
 
-@app.route("/users", methods = ["GET"])
-def all_users():
-	session = Session()
+@app.route("/players/", methods = ["GET"])
+def all_players():
 	try:
+		session = Session()
 		player_query = session.query(Player).all()
-		logger.info(player_query)
-	except exc.NoResultFound as ex:
-		logger.warning(f"No records {ex}")
-	return str(player_query)
+		players = [player.serialize for player in player_query]
+		res = jsonify(players)
+		logger.info("All players are recieved")
+		return res, 200
+	except Exception as ex:
+		message = f"Plaers are not recieved. Error is {ex}"
+		logger.warning(message)
+		res = jsonify({"error": message})
+		return res, 400
 
+@app.route("/players/<id_player>", methods = ["GET"])
+def one_player(id_player):
+	try:
+		session =Session()
+		player_query = session.query(Player).filter(Player.id_player == id_player).one()
+		res = jsonify(player_query.serialize)
+		return res, 200
+	except Exception as ex:
+		message = f"Player with id {id_player} is not recieved. Error is {ex}"
+		logger.warning(message)
+		res = jsonify({"error": message})
+		return res, 400
 
-@app.route("/spec")
+@app.route("/create/player", methods = ["POST"])
+def create_player():
+		content = request.get_json()
+		name = content.get("name_player")
+		if name:
+			try:
+				session = Session()
+			except:
+				pass
+
+@app.route("/spec/")
 def spec():
 	swag =  swagger(app)
 	swag["info"]["version"] = "1.0"

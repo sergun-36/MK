@@ -24,7 +24,14 @@ class Player(Base):
 	__tablename__ = "player"
 	id_player = Column(Integer, primary_key=True)
 	name_player = Column("name_player", String)
-	id_seans = Column(Integer, ForeignKey("seans.id"))	
+	id_seans = Column(Integer, ForeignKey("seans.id"))
+
+	@property
+	def serialize(self):
+		return {"id_player":self.id_player,
+				"name_player": self.name_player,
+				"id_seans": self.id_seans}
+		
 
 
 class Hero(Base):
