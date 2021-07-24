@@ -8,6 +8,7 @@ sqlalchemy = "*"
 pyyaml = "*"
 flask = "*"
 flask-swagger = "*"
+requests = "*"
 
 [dev-packages]
 

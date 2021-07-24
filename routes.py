@@ -50,22 +50,36 @@ def seans_one(seans_id):
 
 @app.route("/create/seans/", methods = ["POST"])
 def create_seans():
-	content = request.get_json()
-	#seans_name = content.get("name")
-	date = request.get("date")
-	if date:
-		try:
-			session = Session()
-			new_seans = Seans(date=date)
-			session.add(new_seans)
-			logger.info(f"New seans with date {date} is added")
-			res = jsonify(new_seans.serialize)
-			return res, 201
-		except Exception as ex:
-			message = f"New seans is not added. Error is {ex}"
+	print(request)
+	try:
+		content = request.get_json()
+		#seans_name = content.get("name")
+		print(content)
+		date = content.get("date")
+		if date:
+			try:
+				session = Session()
+				new_seans = Seans(date=date, is_active=1)
+				session.add(new_seans)
+				session.commit()
+				logger.info(f"New seans with date {date} is added")
+				res = jsonify(new_seans.serialize)
+				return res, 201
+			except Exception as ex:
+				message = f"New seans is not added. Error is {ex}"
+				logger.warning(message)
+				res  = jsonify({"error":message})
+				return res, 400
+		else:
+			message = "seans is not added. Key date is not found"
 			logger.warning(message)
-			res  = jsonify({"error":message})
+			res = jsonify({"error": message})
 			return res, 400
+	except Exception as ex:
+		message = f"Seans is not created. Error is {ex}"
+		logger.warning(message)
+		res = jsonify({"error": message})
+		return res, 400
 
 
 
@@ -104,6 +118,13 @@ def create_player():
 		if name:
 			try:
 				session = Session()
+				id_seans = session.query(Seans).filter(Seans.is_active==1).one()
+				new_player = Player(name_player = name, id_seans=id_seans)
+				session.add(new_player)
+				session.commit()
+				res = jsonify(new_player.serialize)
+				logger.info("New player is created successfull")
+				return res, 201
 			except:
 				pass
 

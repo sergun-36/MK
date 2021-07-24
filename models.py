@@ -11,6 +11,7 @@ class Seans(Base):
 	__tablename__ = "seans"
 	id = Column(Integer, primary_key=True)
 	date = Column("date", String)
+	is_active = Column("is_active", Integer)
 
 	@property
 	def serialize(self):
