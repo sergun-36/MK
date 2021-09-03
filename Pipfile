@@ -9,6 +9,7 @@ pyyaml = "*"
 flask = "*"
 flask-swagger = "*"
 requests = "*"
+pyqt6 = "*"
 
 [dev-packages]
 
