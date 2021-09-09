@@ -1,0 +1,14 @@
+| 2021-09-09 21:53:25,699 | WARNING | Seans is not created. Error is 'NoneType' object has no attribute 'get' | create_seans | 82 | routes.py |
+| 2021-09-09 21:56:13,171 | WARNING | Seans is not created. Error is 'NoneType' object has no attribute 'get' | create_seans | 82 | routes.py |
+| 2021-09-09 21:56:25,821 | WARNING | New seans is not added. Error is (sqlite3.OperationalError) table seans has no column named number_player
+[SQL: INSERT INTO seans (date, number_player, number_hero, is_active) VALUES (?, ?, ?, ?)]
+[parameters: ('2021-09-09', 1, 1, 1)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8) | create_seans | 72 | routes.py |
+| 2021-09-09 21:58:50,124 | WARNING | New seans is not added. Error is (sqlite3.OperationalError) table seans has no column named number_player
+[SQL: INSERT INTO seans (date, number_player, number_hero, is_active) VALUES (?, ?, ?, ?)]
+[parameters: ('2021-09-09', 1, 1, 1)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8) | create_seans | 72 | routes.py |
+| 2021-09-09 22:01:37,674 | WARNING | New seans is not added. Error is (sqlite3.OperationalError) table seans has no column named number_player
+[SQL: INSERT INTO seans (date, number_player, number_hero, is_active) VALUES (?, ?, ?, ?)]
+[parameters: ('2021-09-09', 1, 1, 1)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8) | create_seans | 72 | routes.py |

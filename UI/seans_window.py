@@ -1,9 +1,15 @@
-from create_seanse import Ui_CreateSeans
+from templates.create_seanse import Ui_CreateSeans
+from system_message import SystemMessage
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMessageBox
 from datetime import datetime
+from settings import root_url
+import requests
 
-class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow):
+class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow, SystemMessage):
+
+	url = f"{root_url}/create/seans/"
+
 	def __init__(self):
 		super().__init__()
 		self.setupUi(self)
@@ -23,16 +29,22 @@ class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow):
 				self.number_hero = number_hero
 				is_ok = True
 			else:
+				self.show_warning("Fields should be more than zero")
+				"""
 				warning = QMessageBox()
 				warning.setWindowTitle("Warning. Be carefull")
 				warning.setText("Fields should be more than zero")
 				warning.exec()
+				"""
 				is_ok = False
 		except:
+			self.show_warning("Fields should be numbers")
+			"""
 			warning = QMessageBox()
 			warning.setWindowTitle("Warning. Be carefull")
 			warning.setText("Fields should be numbers")
 			warning.exec()
+			"""
 			self.lineEdit.setText("")
 			self.lineEdit_2.setText("")
 			is_ok = False
@@ -42,12 +54,32 @@ class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow):
 
 	def create_seanse(self):
 		if self.set_data_seans():
-			pass
-			self.close()
-
+			data = {"date": self.date,
+					"number_player": self.number_player,
+					"number_hero": self.number_hero}
+			try:
+				response = requests.post(self.url, json={"date": self.date,
+														"number_player": self.number_player,
+														"number_hero": self.number_hero})
+				status = response.status_code
+				if status == 201:
+					self.show_success(str(response.json()))
+					self.close()
+				else:
+					self.show_warning(f"{status} is wrong {response.error}. Try again")
+			except Exception as ex:
+				message = f"{ex} has broken. Try again"
+				self.show_warning(message)
+			
 
 app =QtWidgets.QApplication([])
-window = SeansWindow()
-window.show()
-app.exec()
-#seans_window = SeansWindow()
+#window = SeansWindow()
+#window.show()
+#app.exec()
+
+
+if __name__ == '__main__':
+	#app =QtWidgets.QApplication([])
+	window = SeansWindow()
+	window.show()
+	app.exec()

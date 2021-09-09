@@ -56,10 +56,12 @@ def create_seans():
 		#seans_name = content.get("name")
 		print(content)
 		date = content.get("date")
-		if date:
+		number_player = content.get("number_player")
+		number_hero = content.get("number_hero")
+		if date and number_hero and number_player:
 			try:
 				session = Session()
-				new_seans = Seans(date=date, is_active=1)
+				new_seans = Seans(date=date, number_hero=number_hero, number_player=number_player, is_active=1)
 				session.add(new_seans)
 				session.commit()
 				logger.info(f"New seans with date {date} is added")

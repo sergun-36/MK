@@ -11,8 +11,8 @@ class Seans(Base):
 	__tablename__ = "seans"
 	id = Column(Integer, primary_key=True)
 	date = Column("date", String)
-	number_player = Column("number_player", String)
-	number_hero = Column("number_hero", String) 
+	number_player = Column("number_player", Integer)
+	number_hero = Column("number_hero", Integer) 
 	is_active = Column("is_active", Integer)
 
 	@property
