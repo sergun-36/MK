@@ -30,21 +30,10 @@ class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow, SystemMessage):
 				is_ok = True
 			else:
 				self.show_warning("Fields should be more than zero")
-				"""
-				warning = QMessageBox()
-				warning.setWindowTitle("Warning. Be carefull")
-				warning.setText("Fields should be more than zero")
-				warning.exec()
-				"""
 				is_ok = False
 		except:
 			self.show_warning("Fields should be numbers")
-			"""
-			warning = QMessageBox()
-			warning.setWindowTitle("Warning. Be carefull")
-			warning.setText("Fields should be numbers")
-			warning.exec()
-			"""
+
 			self.lineEdit.setText("")
 			self.lineEdit_2.setText("")
 			is_ok = False
@@ -63,7 +52,7 @@ class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow, SystemMessage):
 														"number_hero": self.number_hero})
 				status = response.status_code
 				if status == 201:
-					self.show_success(str(response.json()))
+					self.show_success(f"You create tounument with {self.number_hero} heroes for {self.number_player} players")
 					self.close()
 				else:
 					self.show_warning(f"{status} is wrong {response.error}. Try again")
