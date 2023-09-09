@@ -18,11 +18,14 @@ class Ui_Enter_players(object):
         self.centralwidget.setSizeIncrement(QtCore.QSize(0, 0))
         self.centralwidget.setBaseSize(QtCore.QSize(0, 0))
         self.centralwidget.setObjectName("centralwidget")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(30, 60, 471, 31))
-        self.lineEdit.setObjectName("lineEdit")
+
+        # moved to player_window
+        # self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        # self.lineEdit.setGeometry(QtCore.QRect(30, 60, 471, 31))
+        # self.lineEdit.setObjectName("lineEdit_0")
+        
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(410, 120, 89, 25))
+        # self.pushButton.setGeometry(QtCore.QRect(410, 150, 89, 25))# moved to player window
         self.pushButton.setObjectName("pushButton")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(36, 20, 461, 20))
