@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QMessageBox
 from datetime import datetime
 from settings import root_url
 import requests
+from player_window import PlayerWindow
 
 class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow, SystemMessage):
 
@@ -17,6 +18,7 @@ class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow, SystemMessage):
 		self.date = datetime.today().strftime("%Y-%m-%d")
 		self.number_player = None
 		self.number_hero =None
+		self.pw=PlayerWindow()
 
 	def set_data_seans(self):
 		number_player = self.lineEdit.text()
@@ -51,11 +53,16 @@ class SeansWindow(Ui_CreateSeans, QtWidgets.QMainWindow, SystemMessage):
 														"number_player": self.number_player,
 														"number_hero": self.number_hero})
 				status = response.status_code
+				
 				if status == 201:
+					id = response.json()['id']
 					self.show_success(f"You create tounument with {self.number_hero} heroes for {self.number_player} players")
 					self.close()
+					#open player window
+					self.players_window = PlayerWindow(self.number_player, id)
+					self.players_window.show()
 				else:
-					self.show_warning(f"{status} is wrong {response.error}. Try again")
+					self.show_warning(f"{status} is wrong {response.json()['error']}. Try again")
 			except Exception as ex:
 				message = f"{ex} has broken. Try again"
 				self.show_warning(message)
@@ -71,4 +78,6 @@ if __name__ == '__main__':
 	#app =QtWidgets.QApplication([])
 	window = SeansWindow()
 	window.show()
+
 	app.exec()
+

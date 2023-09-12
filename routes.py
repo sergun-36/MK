@@ -115,20 +115,35 @@ def one_player(id_player):
 
 @app.route("/create/player", methods = ["POST"])
 def create_player():
+	print(request)
+	try:
 		content = request.get_json()
-		name = content.get("name_player")
-		if name:
+		if content:
 			try:
 				session = Session()
-				id_seans = session.query(Seans).filter(Seans.is_active==1).one()
-				new_player = Player(name_player = name, id_seans=id_seans)
-				session.add(new_player)
+				# id_seans = session.query(Seans).filter(Seans.is_active==1).one()
+				all_players = [Player(name_player = player['name'], id_seans=player['id_seans']) for player in content]
+				print(all_players)
+				session.add_all(all_players)
 				session.commit()
-				res = jsonify(new_player.serialize)
+				res = jsonify([new_player.serialize for new_player in all_players])
 				logger.info("New player is created successfull")
 				return res, 201
-			except:
-				pass
+			except Exception as ex:
+				message = f"Players are not added. Error is {ex}"
+				logger.warning(message)
+				res  = jsonify({"error":message})
+				return res, 400
+		else:
+			message = "Players aren't added. names are not found"
+			logger.warning(message)
+			res = jsonify({"error": message})
+			return res, 400
+	except Exception as ex:
+		message = f"Players are not added. Error is {ex}"
+		logger.warning(message)
+		res = jsonify({"error": message})
+		return res, 400
 
 @app.route("/spec/")
 def spec():

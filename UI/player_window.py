@@ -8,16 +8,19 @@ import requests
 
 class PlayerWindow(Ui_Enter_players, QtWidgets.QMainWindow, SystemMessage):
 	
-
-	number_players = 3
+	url = f'{root_url}/create/player'
+	number_players = None
 	start_y = 60
 	lineEdits = {}
 
 
-	def __init__(self):
+	def __init__(self, number_players=1, id=None):
 		super().__init__()
 		self.setupUi(self)
 		self.pushButton.pressed.connect(self.push_names)
+		self.number_players = number_players
+		self.seans_id = id
+		self.draw_window()
 
 
 	def create_fields(self):
@@ -46,8 +49,8 @@ class PlayerWindow(Ui_Enter_players, QtWidgets.QMainWindow, SystemMessage):
 		self.players_names = []
 		for line in self.lineEdits.values():
 			if line.text():
-				if line.text() not in self.players_names:
-					self.players_names.append(line.text())
+				if line.text() not in [x["name"] for x in self.players_names]:
+					self.players_names.append({'name':line.text(), 'id_seans':self.seans_id})
 					is_ok = True
 				else:
 					self.show_warning(f"Player with '{line.text()}' name already exist. The name should be unique")	
@@ -61,16 +64,31 @@ class PlayerWindow(Ui_Enter_players, QtWidgets.QMainWindow, SystemMessage):
 
 	def push_names(self):
 		if self.set_players_names():
-			print(self.players_names)
+			try:
+				response = requests.post(self.url, json = self.players_names)
+				print(response)
+				status = response.status_code
+				
+				if status == 201:
+					self.show_success("You've added players")
+					self.close()
+					# #open player window
+					# self.players_window = PlayerWindow(self.number_player, id)
+					# self.players_window.show()
+				else:
+					self.show_warning(f"Status {status} is wrong '{response.json()['error']}'. Try again")
+			except Exception as ex:
+				message = f"{ex} has broken. Try again"
+				self.show_warning(message)
 
 
 
 
-app =QtWidgets.QApplication([])
-window = PlayerWindow()
-window.draw_window()
-window.show()
-app.exec()
+# app =QtWidgets.QApplication([])
+# window = PlayerWindow()
+# window.draw_window()
+# window.show()
+# app.exec()
 
 
 
