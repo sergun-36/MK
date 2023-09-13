@@ -145,6 +145,39 @@ def create_player():
 		res = jsonify({"error": message})
 		return res, 400
 
+
+@app.route("/create/hero", methods = ["POST"])
+def create_heroes():
+	print(request)
+	try:
+		content = request.get_json()
+		if content:
+			try:
+				session = Session()
+				# id_seans = session.query(Seans).filter(Seans.is_active==1).one()
+				all_heroes = [Hero(name_hero = hero['name'], id_seans=hero['id_player']) for hero in content]
+				print(all_heroes)
+				session.add_all(all_heroes)
+				session.commit()
+				res = jsonify([new_hero.serialize for new_hero in all_heroes])
+				logger.info("New heroes is created successfull")
+				return res, 201
+			except Exception as ex:
+				message = f"Heroes are not added. Error is {ex}"
+				logger.warning(message)
+				res  = jsonify({"error":message})
+				return res, 400
+		else:
+			message = "Heroes aren't added. names are not found"
+			logger.warning(message)
+			res = jsonify({"error": message})
+			return res, 400
+	except Exception as ex:
+		message = f"Heroes are not added. Error is {ex}"
+		logger.warning(message)
+		res = jsonify({"error": message})
+		return res, 400
+
 @app.route("/spec/")
 def spec():
 	swag =  swagger(app)
@@ -155,3 +188,8 @@ def spec():
 
 if __name__ == "__main__":
 	app.run(debug = True)
+
+
+"""
+cltkfnm endpoint receivnig heros by name by seans
+"""
