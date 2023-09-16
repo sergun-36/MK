@@ -68,6 +68,7 @@ class PlayerWindow(Ui_Enter_players, QtWidgets.QMainWindow, SystemMessage):
 				response = requests.post(self.url, json = self.players_names)
 				print(response)
 				status = response.status_code
+				print(response.json())
 				
 				if status == 201:
 					self.show_success("You've added players")

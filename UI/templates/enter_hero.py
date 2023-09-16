@@ -14,20 +14,40 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Enter_Hero(object):
     def setupUi(self, Enter_Hero):
         Enter_Hero.setObjectName("Enter heroes")
-        Enter_Hero.resize(299, 142)
+        Enter_Hero.resize(299, 202)
         self.centralwidget = QtWidgets.QWidget(Enter_Hero)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(26, 20, 241, 20))
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label.setObjectName("label")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(30, 50, 241, 25))
-        self.lineEdit.setObjectName("lineEdit")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(180, 90, 89, 25))
+        # self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        # self.lineEdit.setGeometry(QtCore.QRect(30, 50, 241, 25))
+        # self.lineEdit.setObjectName("lineEdit")
+        # self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        # self.pushButton.setGeometry(QtCore.QRect(180, 90, 89, 25))
+        # self.pushButton.setAutoDefault(False)
+        # self.pushButton.setObjectName("pushButton")
+
+        self.frame = QtWidgets.QFrame(self.centralwidget)
+        self.frame.setGeometry(QtCore.QRect(30, 50, 241, 120))
+        self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame.setObjectName("frame")
+
+        self.label_frame = QtWidgets.QLabel(self.frame)
+        self.label_frame.setGeometry(QtCore.QRect(10, 10, 221, 25))
+        self.label_frame.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_frame.setObjectName("label_frame")
+
+        # self.lineEdit = QtWidgets.QLineEdit(self.frame)
+        # self.lineEdit.setGeometry(QtCore.QRect(10, 40, 221, 25))
+        # self.lineEdit.setObjectName("lineEdit_2")
+        self.pushButton = QtWidgets.QPushButton(self.frame)
+        self.pushButton.setGeometry(QtCore.QRect(140, 75, 89, 25))
         self.pushButton.setAutoDefault(False)
-        self.pushButton.setObjectName("pushButton")
+        self.pushButton.setObjectName("OK")
+
         Enter_Hero.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(Enter_Hero)
@@ -37,6 +57,7 @@ class Ui_Enter_Hero(object):
         _translate = QtCore.QCoreApplication.translate
         Enter_Hero.setWindowTitle(_translate("Enter_Hero", "Enter Heroes"))
         self.label.setText(_translate("Enter_Hero", "Enter all heros for the player"))
+        # self.label_frame.setText(_translate("label_frame", "Enter all heros for the player"))
         self.pushButton.setText(_translate("Enter_Hero", "OK"))
 
 # if __name__ == "__main__":
