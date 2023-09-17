@@ -40,9 +40,9 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 		line = QtWidgets.QLineEdit(self.frame)
 		# lines = self.lineEdits[self.players[self.order]['id_player']]
 		line.setGeometry(QtCore.QRect(10, self.start_y_frame, 221, 30))
-		line.setObjectName(f"lineEdit_{number}")
+		line.setObjectName(f"lineEdit_{number}_{self.order}")
 		line.setPlaceholderText(f"Hero {number+1}")
-		print(line)
+		line.show()
 		self.start_y_frame += 40
 		return line
 		
@@ -53,7 +53,7 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 		self.label_frame.setText(f"{player['name_player']}")
 		for row in range(0, self.number_heroes):
 			player_lineEdits.append(self.draw_line(row))
-		self.pushButton.move(140, self.start_y_frame)
+			self.pushButton.move(140, self.start_y_frame)
 		self.frame.resize(241, self.start_y_frame+35)
 		self.resize(299, self.start_y_frame+120)
 		self.lineEdits[player["id_player"]] = player_lineEdits
@@ -85,8 +85,11 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 			self.order += 1
 			self.start_y_frame = 40
 			#remove old objects
-			self.create_fields()
-		print(self.data_heroes)
+			if self.order != len(self.players):
+				self.create_fields()
+
+		# self.order += 1
+		# self.create_fields()
 		return is_ok
 		
 
