@@ -15,6 +15,7 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 	start_y_frame = 40
 	lineEdits = {}
 	data_heroes = []
+	start_x = 10
 
 	def __init__(self):
 		super().__init__()
@@ -57,6 +58,52 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 		self.frame.resize(241, self.start_y_frame+35)
 		self.resize(299, self.start_y_frame+120)
 		self.lineEdits[player["id_player"]] = player_lineEdits
+
+
+	def draw_result(self, hero):
+		player = QtWidgets.QLabel(self.frame_2)
+		player.setGeometry(QtCore.QRect(self.start_x, self.start_y_frame, 105, 25))
+		player.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+		player.setObjectName("label_frame")
+		name_player = [player["name_player"] for player in self.players if player["id_player"] == hero["id_player"]]
+		player.setText(f"{name_player[0]}")
+
+		hero_line = QtWidgets.QLabel(self.frame_2)
+		hero_line.setGeometry(QtCore.QRect(self.start_x+105+11, self.start_y_frame, 105, 25))
+		hero_line.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+		hero_line.setObjectName("label_frame")
+		hero_line.setText(f"{hero['name_hero']}")
+
+
+	def show_results(self):
+		self.label.setText("Your choices")
+		#creation frame with results
+		self.frame_2 = QtWidgets.QFrame(self.centralwidget)
+		self.frame_2.setGeometry(QtCore.QRect(30, 50, 241, 120))
+		self.frame_2.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+		self.frame_2.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+		self.frame_2.setObjectName("frame_2")
+
+		#adding row for each hero
+		for hero in self.data_heroes:
+			self.draw_result(hero)
+			self.start_y_frame += 40
+		self.frame_2.resize(241, self.start_y_frame+35)
+		self.resize(299, self.start_y_frame+95+20)
+
+		# creation push button
+		self.pushButton_Db = QtWidgets.QPushButton(self.frame_2)
+		self.pushButton_Db.setGeometry(QtCore.QRect(140, self.start_y_frame, 89, 25))
+		self.pushButton_Db.setAutoDefault(False)
+		self.pushButton_Db.setObjectName("push_db")
+		self.pushButton_Db.setText("Push Heroes")
+		self.pushButton_Db.pressed.connect(self.push_heroes)
+
+		self.frame_2.show()
+
+
+	def push_heroes(self):
+		print(f"Your results are sent {self.data_heroes}")
 		
 
 
@@ -83,10 +130,15 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 		else:
 
 			self.order += 1
-			self.start_y_frame = 40
+
 			#remove old objects
 			if self.order != len(self.players):
+				self.start_y_frame = 40
 				self.create_fields()
+			else:
+				self.frame.hide()
+				self.start_y_frame = 10
+				self.show_results()
 
 		# self.order += 1
 		# self.create_fields()
