@@ -4,6 +4,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMessageBox
 from datetime import datetime
 from settings import root_url
+from hero_window import HeroWindow
 import requests
 
 class PlayerWindow(Ui_Enter_players, QtWidgets.QMainWindow, SystemMessage):
@@ -66,16 +67,15 @@ class PlayerWindow(Ui_Enter_players, QtWidgets.QMainWindow, SystemMessage):
 		if self.set_players_names():
 			try:
 				response = requests.post(self.url, json = self.players_names)
-				print(response)
 				status = response.status_code
 				print(response.json())
 				
 				if status == 201:
 					self.show_success("You've added players")
 					self.close()
-					# #open player window
-					# self.players_window = PlayerWindow(self.number_player, id)
-					# self.players_window.show()
+					#open hero_window
+					self.hero_window = HeroWindow(response.json())
+					self.hero_window.show()
 				else:
 					self.show_warning(f"Status {status} is wrong '{response.json()['error']}'. Try again")
 			except Exception as ex:

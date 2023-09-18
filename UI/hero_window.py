@@ -17,13 +17,14 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 	data_heroes = []
 	start_x = 10
 
-	def __init__(self):
+	def __init__(self, players):
 		super().__init__()
 		self.setupUi(self)
-		self.players = [{'id_player': 3, 'id_seans': 45, 'name_player': 'sergei1'},
-						 {'id_player': 4, 'id_seans': 45, 'name_player': 'valery1'}]
-		# self.fetch_number_hero()
-		self.number_heroes = 2 # get using get request
+		self.players = players
+		# self.players = [{'id_player': 3, 'id_seans': 45, 'name_player': 'sergei1'},
+		# 				 {'id_player': 4, 'id_seans': 45, 'name_player': 'valery1'}]
+		self.fetch_number_hero()
+		# self.number_heroes = 2 # get using get request
 		self.pushButton.pressed.connect(self.set_heroes_player)
 		self.create_fields()
 		# self.draw_window()
@@ -103,7 +104,22 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 
 
 	def push_heroes(self):
-		print(f"Your results are sent {self.data_heroes}")
+		try:
+			response = requests.post(self.url, json = self.data_heroes)
+			status = response.status_code
+			print(response.json())
+			
+			if status == 201:
+				self.show_success("You've added heroes")
+				self.close()
+				# #open player window
+				# self.players_window = PlayerWindow(self.number_player, id)
+				# self.players_window.show()
+			else:
+				self.show_warning(f"Status {status} is wrong '{response.json()['error']}'. Try again")
+		except Exception as ex:
+			message = f"{ex} has broken. Try again"
+			self.show_warning(message)
 		
 
 
@@ -148,9 +164,9 @@ class HeroWindow(Ui_Enter_Hero, QtWidgets.QMainWindow, SystemMessage):
 			
 
 
-app =QtWidgets.QApplication([])
-window = HeroWindow()
-# window.draw_window()
-window.show()
-print(window.number_heroes)
-app.exec()
+# app =QtWidgets.QApplication([])
+# window = HeroWindow()
+# # window.draw_window()
+# window.show()
+# print(window.number_heroes)
+# app.exec()

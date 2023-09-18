@@ -46,6 +46,12 @@ class Hero(Base):
 	name_hero = Column("name_hero", String)
 	id_player = Column(Integer, ForeignKey("player.id_player"))
 
+	@property
+	def serialize(self):
+		return {"id_hero":self.id_hero,
+				"name_hero": self.name_hero,
+				"id_player": self.id_player}
+
 
 class Game(Base):
 	__tablename__ = "game"

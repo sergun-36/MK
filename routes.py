@@ -155,7 +155,7 @@ def create_heroes():
 			try:
 				session = Session()
 				# id_seans = session.query(Seans).filter(Seans.is_active==1).one()
-				all_heroes = [Hero(name_hero = hero['name'], id_seans=hero['id_player']) for hero in content]
+				all_heroes = [Hero(name_hero = hero['name_hero'], id_player=hero['id_player']) for hero in content]
 				print(all_heroes)
 				session.add_all(all_heroes)
 				session.commit()
